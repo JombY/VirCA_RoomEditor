@@ -32,9 +32,14 @@
         <input type="text" id="search_module_input"/>
     </div>
     <div id="settings">
-        <div id="btn-back">
+	<div id = "buttons">
+		<div id="btn-launch">
+			<a class="btn btn-default">Launch VirCA!</a>
+		</div>
+		<div id="btn-back">
             <a class="btn btn-danger">Get back to the selection part</a>
         </div>
+	</div>
         <div class="plane">
             <p class="centered"> Select the property you would like to change</p>
             <div class="row">
@@ -404,6 +409,21 @@
 
     });
 
+	$('#btn-launch').on("click", function(){
+		room  = sessionStorage.getItem('room');
+		version = sessionStorage.getItem('version');
+		changeRoomProperty(room,version);
+		var cp = require('child_process').spawn;
+		result = cp('C:/Program Files (x86)/VirCA/'+version+'/VirCA.exe',[], {cwd : 'C:/Program Files (x86)/VirCA/'+version});
+		console.log(result.spawnfile);
+	});
+	
+	function changeRoomProperty(room,version){
+		var parser = require('properties-parser');
+		var prop = parser.createEditor('C:/Users/Public/Documents/VirCA/' + version + '/rtc.conf');
+		prop.set('VirCA.InitRoom', room);
+		prop.save();
+	}
 
     </script>
    </body>

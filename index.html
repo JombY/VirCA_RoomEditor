@@ -39,13 +39,22 @@
     window.$ = window.jQuery = require('jQuery');
     var chooser = MakeTreeStructure();
     var roomPath = "";
+	var room="";
+	var dir="";
+	$('#btn-submit').attr('disabled', 'true');
+	bindRadioOnChange();
+	
     $('#btn-submit').on("click", function(){
         roomPath = $("input[type='radio'][name='myChoice']:checked").val();
+		room = $("input[type='radio'][name='myChoice']:checked").attr('id');
+		dir = $("input[type='radio'][name='myChoice']:checked").attr('dir');
         sessionStorage.setItem('roomPath', roomPath);
+		sessionStorage.setItem('room', room);
+		sessionStorage.setItem('version', dir);
         window.location = "./settings.html";
+		
     });
-
-
+	
     function MakeTreeStructure(){
         var fs = require('fs');
         var glob = require("glob");
@@ -62,7 +71,7 @@
             for (var j = 0; j < room_dirs.length; j++) {
                 if(fs.existsSync("C:/Users/Public/Documents/VirCA/"+dirs[i]+"/Media/rooms/"+room_dirs[j]+"/"+room_dirs[j]+".room")){
                     rooms[i][p] = "C:/Users/Public/Documents/VirCA/"+dirs[i]+"/Media/rooms/"+room_dirs[j]+"/"+room_dirs[j]+".room";
-                    $('#choiceTreeLis'+i).append('<li><input type="radio" name="myChoice" value="'+rooms[i][p]+'">'+room_dirs[j]+'</li>');
+                    $('#choiceTreeLis'+i).append('<li><input dir="'+dirs[i]+'" id="'+room_dirs[j]+'" type="radio" name="myChoice" value="'+rooms[i][p]+'">'+room_dirs[j]+'</li>');
                      ++p;
                 }
             };
@@ -77,6 +86,13 @@
       return fs.readdirSync(srcpath).filter(function(file) {
         return fs.statSync(path.join(srcpath, file)).isDirectory();
       });
+	  
     }
+	
+	function bindRadioOnChange(){
+		$("input[type='radio']").on("change",function(){
+			$('#btn-submit').removeAttr('disabled');
+		});
+	}
 </script>
 </html>

@@ -39,6 +39,11 @@
         width: 100%;
         text-align: center;
     }
+    #btn-launch{
+        margin-bottom: 20px;
+        width: 100%;
+        text-align: center;
+    }
     header{
         margin-left: 100px;
         margin-right: 165px;
